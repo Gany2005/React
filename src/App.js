@@ -20,6 +20,7 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { InputPage } from "./pages/InputPage/InputPage";
+import { CurrencyPage } from "./pages/CurrencyPage/CurrencyPage";
 function App() {
   return (
     <div className="App">
@@ -35,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/input" element={<InputPage />} />
+        <Route path="/currency" element = {<CurrencyPage />} />
       </Routes>
     </div>
   );
