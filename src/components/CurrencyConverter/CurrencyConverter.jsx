@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 function CurrencyConverter() {
   const apyToken = process.env.REACT_APP_APY_TOKEN;
@@ -8,6 +8,37 @@ function CurrencyConverter() {
   const [currency, setCurrency] = useState("");
   const [conversion, setConversion] = useState("");
   const [hide, setHide] = useState(true);
+  const [usd, setUsd] = useState(0);
+
+  useEffect(() => {
+    const payload = {
+      source: "inr",
+      target: "usd",
+    };
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        "apy-token": apyToken,
+      },
+    };
+
+    const url = "https://api.apyhub.com/data/convert/currency";
+
+    axios
+      .post(url, payload, headers)
+      .then((response) => {
+        console.log(response);
+        if (response && response.data) {
+          const con = parseFloat(response.data.data);
+          setUsd(con);
+        }
+      })
+      .catch((err) => {
+        console.log("error -- ", err);
+        alert("Error while doing coversion");
+      });
+  }, []);
 
   const handleAmount = useCallback((event) => {
     event.preventDefault();
@@ -49,11 +80,13 @@ function CurrencyConverter() {
           setHide(true);
         });
     },
-    [amount, currency]
+    [amount, currency],
   );
 
   return (
     <>
+      <h1> 1 INR  = {usd} USD</h1>
+      <br/>
       <form
         onSubmit={handleSubmit}
         style={{ maxWidth: "300px", margin: "20px auto" }}
